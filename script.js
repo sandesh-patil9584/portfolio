@@ -86,17 +86,37 @@ function highlightNavLinks() {
     });
 }
 
-// Form Submission Prevention (demo mode)
+// Form Submission via FormSubmit AJAX
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = contactForm.querySelector('button');
     const originalText = btn.innerHTML;
     
-    // Simulate loading and success state
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    // Loading state
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     btn.style.opacity = '0.8';
+    btn.disabled = true;
     
-    setTimeout(() => {
+    fetch("https://formsubmit.co/ajax/patilsandesh1010@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            message: message,
+            _subject: "✨ New message from your Portfolio!"
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Success state
         btn.innerHTML = 'Message Sent! <i class="fas fa-check"></i>';
         btn.style.background = '#10b981';
         btn.style.boxShadow = '0 4px 14px 0 rgba(16, 185, 129, 0.39)';
@@ -108,8 +128,21 @@ contactForm.addEventListener('submit', (e) => {
             btn.style.background = '';
             btn.style.boxShadow = '';
             btn.style.opacity = '1';
+            btn.disabled = false;
         }, 3000);
-    }, 1500);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        btn.innerHTML = 'Error! Try Again';
+        btn.style.background = '#ef4444';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+            btn.style.opacity = '1';
+            btn.disabled = false;
+        }, 3000);
+    });
 });
 
 // Smooth scrolling for anchor links (safeguard for cross-browser)

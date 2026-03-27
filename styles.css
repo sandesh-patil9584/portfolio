@@ -736,6 +736,20 @@ header.scrolled {
   height: 240px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-placeholder-icon {
+  font-size: 5rem;
+  color: rgba(255, 255, 255, 0.2);
+  transition: var(--transition);
+}
+
+.project-card:hover .project-placeholder-icon {
+  transform: scale(1.1);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .project-overlay {
